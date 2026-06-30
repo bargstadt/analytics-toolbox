@@ -1,0 +1,78 @@
+# analytics-toolbox configuration
+# Copy this file to config.yaml and fill in your paths.
+# config.yaml is gitignored — it contains local paths and should not be committed.
+
+storage:
+  # Local DuckDB file that holds the ingested NAD and TIGER reference data.
+  connection: ~/.local/share/analytics_toolbox/analytics_toolbox.duckdb
+  # Directory for downloaded reference data (NAD ZIP, TIGER shapefiles).
+  data_dir: ~/.local/share/analytics_toolbox/
+
+geospatial:
+  nad:
+    # US state(s) to ingest from the National Address Database.
+    # Add more states as needed: [IA, MO, IL, CA]
+    states: [IA]
+    force_refresh: false  # set true to re-download even if data already exists
+
+  tiger:
+    vintage: 2024         # TIGER/Line vintage year
+    force_refresh: false
+
+  matching:
+    confidence_threshold: 90  # minimum fuzzy-match score to accept a NAD match
+
+  # Uncomment to override the NAD download URL (e.g. after a new NAD release):
+  # nad:
+  #   url: https://datahub.transportation.gov/api/views/fc2s-wawr/files/<blob-id>?filename=TXT.zip
+
+  # Uncomment to use MotherDuck instead of a local DuckDB file (storage-level change only):
+  # storage:
+  #   connection: md:analytics_toolbox
+  #   data_dir: ~/.local/share/analytics_toolbox/
+
+entity_resolution:
+  # Column to block candidates by before fuzzy matching.
+  block_column: DOB
+  # Fallback blocking when block_column is null.
+  secondary_block_columns: [Last_Name, Postal_Code]
+  # REQUIRED: minimum weighted similarity score to consider two records a match.
+  # Tune per dataset — 0.80 is a reasonable starting point for MPI work.
+  match_threshold: 0.80
+  # Top N matches per record per pairwise system comparison passed to clustering.
+  top_n_matches: 1
+  # Fan-out guard: raise RuntimeError if a block yields more than this many candidate pairs.
+  max_block_pairs: 500000
+  # Column name in input DataFrames that holds the street address.
+  address_col: Address
+  # Weights for each matching field. Missing fields in a system pair are excluded
+  # from both numerator and denominator (weight normalization handles this automatically).
+  field_weights:
+    DOB: 1.0
+    Last_Name: 0.35
+    First_Name: 0.2
+    Middle_Name: 0.05
+    SSN: 0.2
+    Phone: 0.05
+    Address: 0.05
+    City: 0.03
+    County: 0.02
+    Postal_Code: 0.05
+
+acs:
+  # US state(s) to pull ACS 5-year estimates for, by USPS abbreviation.
+  states: [IA]
+  # Each report groups one or more ACS variable codes. The code prefix selects the
+  # Census endpoint automatically: B/C -> detailed, S -> subject, DP -> data profile.
+  # Supported geographies: block_group, tract, county (keyed by FIPS — these join
+  # onto the block-group FIPS that the geospatial geocoder assigns).
+  reports:
+    - name: poverty_estimate
+      variables:
+        - code: B01001_001E        # Total population (detailed table)
+          geographies: [block_group, tract]
+        - code: S1701_C03_001E     # Pct below poverty level (subject table)
+          geographies: [tract, county]
+  # The Census API key is a secret and is NOT read from this file. Set it via the
+  # CENSUS_API_KEY environment variable or a .env file. Get a free key at
+  # https://api.census.gov/data/key_signup.html
