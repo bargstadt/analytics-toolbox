@@ -8,11 +8,9 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
-Working toward the first stable release (`0.1.0`). Beta pre-releases (`0.1.0bN`) are
-published to PyPI during an in-progress code self-audit; `pip install` skips them
-unless you pass `--pre`.
+_Nothing yet._
 
-## [0.1.0] — first public release (in progress)
+## [0.1.1] — first public release
 
 Initial public release: a single, privacy-first analytics package designed to run
 entirely on the machine that holds the data.
@@ -36,5 +34,5 @@ entirely on the machine that holds the data.
   the MIT license, and a full documentation set (per-module README + ARCHITECTURE,
   plus an onboarding guide).
 
-[Unreleased]: https://github.com/bargstadt/analytics-toolbox/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/bargstadt/analytics-toolbox/releases/tag/v0.1.0
+[Unreleased]: https://github.com/bargstadt/analytics-toolbox/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/bargstadt/analytics-toolbox/releases/tag/v0.1.1

@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "privacy-analytics-toolbox"
-version = "0.1.0"
+version = "0.1.1"
 description = "Reusable, privacy-first analytics utilities — geospatial geocoding, entity resolution, synthetic data, feature engineering, Census ACS ingest, and DuckDB helpers."
 authors = [
     { name = "Matthew Bargstadt", email = "matthew.bargstadt@gmail.com" }

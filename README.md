@@ -37,13 +37,12 @@ The toolbox is built to run inside HIPAA-constrained environments — the design
 
 ## Install
 
-> **Release status:** the first public release is in progress. Beta pre-releases are published to PyPI as **`privacy-analytics-toolbox`**; the stable `0.1.0` follows a code self-audit. (The import name is `analytics_toolbox`; the package is renamed only because `analytics-toolbox` was already taken on PyPI.)
+> **Release status:** `0.1.1` is the current release, published to PyPI as **`privacy-analytics-toolbox`**. (The import name is `analytics_toolbox`; the package is renamed only because `analytics-toolbox` was already taken on PyPI.)
 
 One install pulls the whole toolbox — there are no per-module extras:
 
 ```bash
-pip install --pre privacy-analytics-toolbox   # latest beta
-pip install privacy-analytics-toolbox         # stable, once 0.1.0 ships
+pip install privacy-analytics-toolbox
 ```
 
 Or install from source:
